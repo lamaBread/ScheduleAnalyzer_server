@@ -1,0 +1,46 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: SA_apache_php
+    environment:
+      - SC_P_I=${SC_P_I}
+      - SC_P_C=${SC_P_C}
+      - SC_P_SS=${SC_P_SS}
+      - SC_P_DDLtS=${SC_P_DDLtS}
+      - SC_P_REQ=${SC_P_REQ}
+      - SC_P_U=${SC_P_U}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=db
+      - DB_UESR=rate_limiter
+    ports:
+      - "${RP_PORT}:443" # 웹 서버는 외부에서 접근 가능, https 포트로 바로 연결.
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - internal_network # MariaDB와 동일한 네트워크에 연결
+
+  db:
+    image: mariadb:11.6.2
+    container_name: SA_mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password_qqq
+      MYSQL_DATABASE: schedule
+      MYSQL_USER: SAuser
+      MYSQL_PASSWORD: password_sa
+    volumes:
+      - db_data:/var/lib/mysql # 데이터베이스 파일을 호스트에 저장 ("sudo docker volume inspect schedule-analyzer_db_data"로 확인 가능)
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./my.cnf:/etc/mysql/my.cnf  # MySQL 설정 파일을 컨테이너에 복사
+    networks:
+      - internal_network # 외부로부터 격리된 네트워크
+
+volumes:
+  db_data:
+
+networks:
+  internal_network:
+    driver: bridge

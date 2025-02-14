@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 define('ALLOW_ACCESS', true);
 
 // 에러 보고 설정
-ini_set('display_errors', 1);  // 사용자에게 에러 메시지 숨기기
+ini_set('display_errors', 0);  // 사용자에게 에러 메시지 숨기기
 ini_set('log_errors', 1);  // 오류 로그를 활성화
 ini_set('error_log', '/var/log/project-schedule/make.log');   // 오류 로그 파일의 경로 설정
 error_reporting(1);
@@ -56,11 +56,6 @@ try {
         $responseStatus = "Too many requests. Please try again later.";
         throw new Exception($responseStatus);
     }
-
-    http_response_code(200);
-    $response = array("status" => "test2");
-    echo json_encode($response);
-    exit;
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error
     $response = array("error" => $e->getMessage());

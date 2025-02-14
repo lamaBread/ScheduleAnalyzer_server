@@ -9,10 +9,10 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 define('ALLOW_ACCESS', true);
 
 // 에러 보고 설정
-ini_set('display_errors', 0);  // 사용자에게 에러 메시지 숨기기
+ini_set('display_errors', 1);  // 사용자에게 에러 메시지 숨기기
 ini_set('log_errors', 1);  // 오류 로그를 활성화
 ini_set('error_log', '/var/log/project-schedule/make.log');   // 오류 로그 파일의 경로 설정
-error_reporting(0);
+error_reporting(1);
 
 // 현재 요청이 HTTPS인지 확인. => HTTPS가 아니라면 접속 차단.
 if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
@@ -49,7 +49,7 @@ try {
     header('Content-Type: application/json');
 
     // rate limit 설정.
-    include 'rate_limit.php';  // rate_limit.php 파일 포함
+    include_once 'rate_limit.php';  // rate_limit.php 파일 포함
     $ip = $_SERVER['REMOTE_ADDR'];  // 클라이언트 IP 주소
     if (!empty($ip) && !checkRateLimit($ip)) {  // 요청 제한 체크
         http_response_code(429); // Too Many Requests

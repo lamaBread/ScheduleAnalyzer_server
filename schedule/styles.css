@@ -1,0 +1,28 @@
+html{
+    margin: 5%;
+    margin-top:15%;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 0px;
+    font-size: 12px;
+}
+
+.timetable-cell {
+    height: 0.5px;
+    border-top: none;
+    border-bottom: none;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.reset-buttons button{
+    width: 10%;
+    display: inline-block; 
+    padding: 8px;
+    font-size: 14px;
+}

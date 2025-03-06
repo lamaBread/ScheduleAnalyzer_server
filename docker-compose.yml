@@ -1,0 +1,33 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME}
+    ports:
+      - "${HOST_PORT_WEB}:80"  # Web port -> container:80
+      - "${HOST_PORT_DB}:3306"  # DB port -> container:3306
+    volumes:
+      - ./src:/var/www/html
+      - mysql-data:/var/lib/mysql
+    environment:
+      # 데이터베이스 관련 환경변수
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      
+      # PHP 애플리케이션 환경변수
+      - DB-NAME=${DB-NAME}
+      - SC_P_I=${SC_P_I}
+      - SC_P_C=${SC_P_C}
+      - SC_P_SS=${SC_P_SS}
+      - SC_P_DDLtS=${SC_P_DDLtS}
+      - SC_P_REQ=${SC_P_REQ}
+      - SC_P_U=${SC_P_U}
+
+
+    restart: always
+
+volumes:
+  mysql-data:

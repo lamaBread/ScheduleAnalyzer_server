@@ -162,12 +162,12 @@ function addUnavailableDay() {
     const start = document.getElementById('start_datetime');
     const end = document.getElementById('end_datetime');
 
-    // 문자열을 Date 객체로 변환
-    const startDate = new Date(start.value);
-    const endDate = new Date(end.value);
+    if (!start.value || !end.value) {
+        alert('시작시간과 종료시간을 모두 입력해 주세요');
+        return;
+    }
 
-    // 날짜와 시간을 비교
-    if (startDate >= endDate) {
+    if (start.value >= end.value) {
         alert("시작 시각 이후의 종료 시각을 선택해 주세요");
         return;
     }
@@ -222,6 +222,7 @@ function addUnavailableDay() {
     //hidden input에 모든 option 태그를 가져와 기록하는 함수.
     writeUnavailableDays();
 }
+
 
 //hidden input에 사용자가 추가한 일정을 기록하는 함수.
 function writeUnavailableDays(){
